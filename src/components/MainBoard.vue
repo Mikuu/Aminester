@@ -13,7 +13,7 @@
       <FolderBuilder/>
     </v-window-item>
     <v-window-item value="2" class="mt-4">
-      Sub renaming
+      <SubRenaming/>
     </v-window-item>
     <v-window-item value="3" class="mt-4">
       Directory flatten
@@ -23,6 +23,7 @@
 
 <script setup>
 import FolderBuilder from "@/components/FolderBuilder.vue";
+import SubRenaming from "@/components/SubRenaming.vue";
 import { ref } from "vue";
 
 const tab = ref(null);

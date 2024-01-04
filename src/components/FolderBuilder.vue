@@ -23,13 +23,13 @@
           <v-text-field label="Decompress passcode" :model-value="decompressPasscode"></v-text-field>
         </v-col>
         <v-col cols="12" sm="1">
-          <v-btn variant="outlined" class="mt-3">Add</v-btn>
+          <v-btn variant="outlined" class="mt-3 w-100">Add</v-btn>
         </v-col>
         <v-col cols="12" sm="1">
-          <v-btn variant="outlined" class="mt-3">Clear</v-btn>
+          <v-btn variant="outlined" class="mt-3 w-100">Clear</v-btn>
         </v-col>
         <v-col cols="12" sm="1">
-          <v-btn variant="outlined" class="mt-3">Create</v-btn>
+          <v-btn variant="outlined" class="mt-3 w-100">Create</v-btn>
         </v-col>
       </v-row>
 
