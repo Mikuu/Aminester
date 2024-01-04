@@ -10,13 +10,13 @@
   </v-tabs>
   <v-window v-model="tab">
     <v-window-item value="1" class="mt-4">
-      <FolderBuilder/>
+      <FolderBuilder />
     </v-window-item>
     <v-window-item value="2" class="mt-4">
-      <SubRenaming/>
+      <SubRenaming />
     </v-window-item>
     <v-window-item value="3" class="mt-4">
-      Directory flatten
+      <DirectoryFlatten />
     </v-window-item>
   </v-window>
 </template>
@@ -24,6 +24,7 @@
 <script setup>
 import FolderBuilder from "@/components/FolderBuilder.vue";
 import SubRenaming from "@/components/SubRenaming.vue";
+import DirectoryFlatten from "@/components/DirectoryFlatten.vue";
 import { ref } from "vue";
 
 const tab = ref(null);
