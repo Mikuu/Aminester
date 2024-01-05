@@ -42,7 +42,8 @@
                  && !subRenamingStore.generatedNewSubtitleFilenames">Reset</v-btn>
         </v-col>
         <v-col cols="12" sm="2" class="d-flex">
-          <div :class="['text-h6', 'w-100', 'mt-3', 'align-self-center', matcherColor]">{{ matcher }}</div>
+          <div v-if="subRenamingStore.filesInVideoPath && subRenamingStore.filesInSubtitlePath"
+               :class="['text-h6', 'w-100', 'mt-3', 'align-self-center', matcherColor]">{{ matcher }}</div>
         </v-col>
       </v-row>
 
