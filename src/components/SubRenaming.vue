@@ -41,6 +41,9 @@
                  && !subRenamingStore.filesInSubtitlePath
                  && !subRenamingStore.generatedNewSubtitleFilenames">Reset</v-btn>
         </v-col>
+        <v-col cols="12" sm="2" class="d-flex">
+          <div :class="['text-h6', 'w-100', 'mt-3', 'align-self-center', matcherColor]">{{ matcher }}</div>
+        </v-col>
       </v-row>
 
       <v-row>
@@ -74,15 +77,36 @@
 </template>
 
 <script setup>
+import { ref, watch } from "vue";
 import { useSubRenamingStore } from "@/stores/subRenaming";
 import { useMainBoardStore } from "@/stores/mainBoard";
 
 const subRenamingStore = useSubRenamingStore();
 const mainBoardStore = useMainBoardStore();
 
+const matcher = ref("");
+const matcherColor = ref("");
+
 const load = () => {
   subRenamingStore.loadVideoAndSubtitleFiles();
+  checkAndUpdateMatcher();
 };
+
+const checkAndUpdateMatcher = () => {
+  const videoFilesCount = subRenamingStore.filesInVideoPath.split("\n").length;
+  const subtitleFilesCount = subRenamingStore.filesInSubtitlePath.split("\n").length;
+
+  matcher.value = `${videoFilesCount}v/${subtitleFilesCount}s`;
+  matcherColor.value = videoFilesCount === subtitleFilesCount ? "text-green-darken-3" : "text-deep-orange-accent-3"
+};
+
+watch(() => subRenamingStore.filesInVideoPath, () => {
+  checkAndUpdateMatcher();
+});
+
+watch(() => subRenamingStore.filesInSubtitlePath, () => {
+  checkAndUpdateMatcher();
+});
 
 const preview = () => {
   subRenamingStore.generateNewSubtitleFilenames();
@@ -90,6 +114,7 @@ const preview = () => {
 
 const clear = () => {
   subRenamingStore.clear();
+  matcher.value = "";
 };
 
 const create = () => {
@@ -104,6 +129,7 @@ const create = () => {
 
 const reset = () => {
   subRenamingStore.reset();
+  matcher.value = "";
 };
 
 </script>
