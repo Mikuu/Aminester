@@ -3,10 +3,10 @@
     <v-container>
       <v-row>
         <v-col cols="12" sm="6">
-          <v-text-field label="Video path" :model-value="videoPath"></v-text-field>
+          <v-text-field label="Video path" v-model="subRenamingStore.config.videoPath"></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
-          <v-text-field label="Subtitle path" :model-value="subtitlePath"></v-text-field>
+          <v-text-field label="Subtitle path" v-model="subRenamingStore.config.subtitlePath"></v-text-field>
         </v-col>
       </v-row>
 
@@ -14,30 +14,49 @@
 
       <v-row class="mt-2" justify="start">
         <v-col cols="12" sm="2">
-          <v-btn variant="outlined" class="mt-3 w-100">Load</v-btn>
+          <v-btn variant="outlined" class="mt-3 w-100" @click="load"
+                 :disabled="!subRenamingStore.config.videoPath
+                 || !subRenamingStore.config.subtitlePath">Load</v-btn>
         </v-col>
         <v-col cols="12" sm="2">
-          <v-btn variant="outlined" class="mt-3 w-100">Preview</v-btn>
+          <v-btn variant="outlined" class="mt-3 w-100" @click="preview"
+                 :disabled="!subRenamingStore.filesInVideoPath
+                 || !subRenamingStore.filesInSubtitlePath">Preview</v-btn>
         </v-col>
         <v-col cols="12" sm="2">
-          <v-btn variant="outlined" class="mt-3 w-100">Clear</v-btn>
+          <v-btn variant="outlined" class="mt-3 w-100" @click="clear"
+                 :disabled="!subRenamingStore.filesInVideoPath
+                 && !subRenamingStore.filesInSubtitlePath
+                 && !subRenamingStore.generatedNewSubtitleFilenames">Clear</v-btn>
         </v-col>
         <v-col cols="12" sm="2">
-          <v-btn variant="outlined" class="mt-3 w-100">Create</v-btn>
+          <v-btn variant="outlined" class="mt-3 w-100" @click="create"
+                 :disabled="!subRenamingStore.generatedNewSubtitleFilenames">Create</v-btn>
         </v-col>
         <v-col cols="12" sm="2">
-          <v-btn variant="outlined" class="mt-3 w-100">Reset</v-btn>
+          <v-btn variant="outlined" class="mt-3 w-100" @click="reset"
+                 :disabled="!subRenamingStore.config.videoPath
+                 && !subRenamingStore.config.subtitlePath
+                 && !subRenamingStore.filesInVideoPath
+                 && !subRenamingStore.filesInSubtitlePath
+                 && !subRenamingStore.generatedNewSubtitleFilenames">Reset</v-btn>
         </v-col>
       </v-row>
 
       <v-row>
-        <v-col cols="12" sm="12" class="py-0">
-          <v-textarea label="Video" variant="outlined" rows="14" row-height="6"></v-textarea>
+        <v-col cols="12" sm="6" class="pt-4 pb-0">
+          <v-textarea label="Ori Video" variant="outlined" rows="14" row-height="6"
+                      v-model="subRenamingStore.filesInVideoPath"></v-textarea>
+        </v-col>
+        <v-col cols="12" sm="6" class="pt-4 pb-0">
+          <v-textarea label="Ori Subtitle" variant="outlined" rows="14" row-height="6"
+                      v-model="subRenamingStore.filesInSubtitlePath"></v-textarea>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="12" class="mb-0 py-0">
-          <v-textarea label="Subtitle" variant="outlined" rows="14" row-height="6"></v-textarea>
+          <v-textarea label="ToBe Subtitle" variant="outlined" rows="14" row-height="6"
+                      v-model="subRenamingStore.generatedNewSubtitleFilenames"></v-textarea>
         </v-col>
       </v-row>
 
@@ -55,23 +74,38 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { useSubRenamingStore } from "@/stores/subRenaming";
+import { useMainBoardStore } from "@/stores/mainBoard";
 
-const videoPath = ref("");
-const subtitlePath = ref("");
-// const startIndex = ref("");
-// const objectName = ref("");
-// const decompressPasscode = ref("");
-// const objectItems = ref([
-//   {
-//     name: "I203_Fate Zero / Tonight_",
-//     decompressPasscode: "uploadedBy@desfaff"
-//   },
-//   {
-//     name: "I203_Fate Zero / Tonight_",
-//     decompressPasscode: "uploadedBy@desfaff"
-//   }
-// ]);
+const subRenamingStore = useSubRenamingStore();
+const mainBoardStore = useMainBoardStore();
+
+const load = () => {
+  subRenamingStore.loadVideoAndSubtitleFiles();
+};
+
+const preview = () => {
+  subRenamingStore.generateNewSubtitleFilenames();
+};
+
+const clear = () => {
+  subRenamingStore.clear();
+};
+
+const create = () => {
+  const result = subRenamingStore.create();
+
+  if (result) {
+    mainBoardStore.enableSucceedSnackbar("Create subtitles succeed.");
+  } else {
+    mainBoardStore.enableFailedSnackbar("Create subtitles failed, check Console...");
+  }
+};
+
+const reset = () => {
+  subRenamingStore.reset();
+};
+
 </script>
 
 <style scoped>
