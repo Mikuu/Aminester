@@ -1,24 +1,19 @@
 # animester
 
 ## Project setup
-```
+```commandline
 npm install
 ```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+### Run desktop app
+```commandline
+npm run electron:serve
 ```
 
-### Lints and fixes files
-```
-npm run lint
+### Build desktop app
+```commandline
+npm run electron:build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Notes
+### 1. Two `background.js` file
+There are 2 `background.js` files in the root and src path, both of them are required, even though their contents are identical.
